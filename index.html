@@ -1352,9 +1352,26 @@
 
   <div class="qc-container">
 
-    <!-- Question 1: What's your role? -->
+    <!-- Question 1: Which country? -->
     <div class="qc-step">
       <div class="qc-step-num">1</div>
+      <div class="qc-step-content">
+        <div class="qc-question">Where do you place packaging on the market?</div>
+        <div class="qc-options qc-options-wrap" id="qc-country-options">
+          <button class="qc-option qc-option-compact" data-value="SE" onclick="qcSelect('country',this)"><span class="qc-opt-icon">🇸🇪</span><span class="qc-opt-label">Sweden</span></button>
+          <button class="qc-option qc-option-compact" data-value="NO" onclick="qcSelect('country',this)"><span class="qc-opt-icon">🇳🇴</span><span class="qc-opt-label">Norway</span></button>
+          <button class="qc-option qc-option-compact" data-value="DK" onclick="qcSelect('country',this)"><span class="qc-opt-icon">🇩🇰</span><span class="qc-opt-label">Denmark</span></button>
+          <button class="qc-option qc-option-compact" data-value="FI" onclick="qcSelect('country',this)"><span class="qc-opt-icon">🇫🇮</span><span class="qc-opt-label">Finland</span></button>
+          <button class="qc-option qc-option-compact" data-value="EE" onclick="qcSelect('country',this)"><span class="qc-opt-icon">🇪🇪</span><span class="qc-opt-label">Estonia</span></button>
+          <button class="qc-option qc-option-compact" data-value="LV" onclick="qcSelect('country',this)"><span class="qc-opt-icon">🇱🇻</span><span class="qc-opt-label">Latvia</span></button>
+          <button class="qc-option qc-option-compact" data-value="LT" onclick="qcSelect('country',this)"><span class="qc-opt-icon">🇱🇹</span><span class="qc-opt-label">Lithuania</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question 2: What's your role? -->
+    <div class="qc-step qc-locked" id="qc-step-role">
+      <div class="qc-step-num">2</div>
       <div class="qc-step-content">
         <div class="qc-question">What do you do with packaging?</div>
         <div class="qc-options" id="qc-role-options">
@@ -1373,23 +1390,6 @@
             <span class="qc-opt-label">I distribute or resell products</span>
             <span class="qc-opt-detail">You sell or distribute goods packaged by someone else</span>
           </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Question 2: Which country? -->
-    <div class="qc-step qc-locked" id="qc-step-country">
-      <div class="qc-step-num">2</div>
-      <div class="qc-step-content">
-        <div class="qc-question">Where do you place packaging on the market?</div>
-        <div class="qc-options qc-options-wrap" id="qc-country-options">
-          <button class="qc-option qc-option-compact" data-value="SE" onclick="qcSelect('country',this)"><span class="qc-opt-icon">🇸🇪</span><span class="qc-opt-label">Sweden</span></button>
-          <button class="qc-option qc-option-compact" data-value="NO" onclick="qcSelect('country',this)"><span class="qc-opt-icon">🇳🇴</span><span class="qc-opt-label">Norway</span></button>
-          <button class="qc-option qc-option-compact" data-value="DK" onclick="qcSelect('country',this)"><span class="qc-opt-icon">🇩🇰</span><span class="qc-opt-label">Denmark</span></button>
-          <button class="qc-option qc-option-compact" data-value="FI" onclick="qcSelect('country',this)"><span class="qc-opt-icon">🇫🇮</span><span class="qc-opt-label">Finland</span></button>
-          <button class="qc-option qc-option-compact" data-value="EE" onclick="qcSelect('country',this)"><span class="qc-opt-icon">🇪🇪</span><span class="qc-opt-label">Estonia</span></button>
-          <button class="qc-option qc-option-compact" data-value="LV" onclick="qcSelect('country',this)"><span class="qc-opt-icon">🇱🇻</span><span class="qc-opt-label">Latvia</span></button>
-          <button class="qc-option qc-option-compact" data-value="LT" onclick="qcSelect('country',this)"><span class="qc-opt-icon">🇱🇹</span><span class="qc-opt-label">Lithuania</span></button>
         </div>
       </div>
     </div>
@@ -3631,12 +3631,12 @@ function qcSelect(field, btn) {
   btn.closest('.qc-step').classList.add('qc-done');
 
   // Unlock next step
-  if (field === 'role') {
-    const step = document.getElementById('qc-step-country');
-    step.classList.remove('qc-locked');
-    if (!qcState.country) step.scrollIntoView({ behavior:'smooth', block:'center' });
-  }
   if (field === 'country') {
+    const step = document.getElementById('qc-step-role');
+    step.classList.remove('qc-locked');
+    if (!qcState.role) step.scrollIntoView({ behavior:'smooth', block:'center' });
+  }
+  if (field === 'role') {
     const step = document.getElementById('qc-step-pkg');
     step.classList.remove('qc-locked');
     if (!qcState.pkg) step.scrollIntoView({ behavior:'smooth', block:'center' });

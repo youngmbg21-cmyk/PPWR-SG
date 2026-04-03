@@ -887,6 +887,136 @@
   .wiz-scenario:hover { border-color: var(--sg-red); transform: translateY(-1px); }
   .wiz-scenario.selected { border-color: var(--sg-red); border-width: 2.5px; background: #fef2f2; }
 
+  /* Quick Check */
+  .qc-container { max-width: 700px; margin: 0 auto; }
+  .qc-step {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s;
+    position: relative;
+  }
+  .qc-step.qc-locked {
+    opacity: 0.4;
+    pointer-events: none;
+    filter: grayscale(0.3);
+  }
+  .qc-step.qc-locked::after {
+    content: '🔒';
+    position: absolute;
+    top: 16px;
+    right: 18px;
+    font-size: 16px;
+  }
+  .qc-step.qc-done { border-color: #86efac; background: #f0fdf4; }
+  .qc-step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: white;
+    font-weight: 800;
+    font-size: 13px;
+    font-family: 'Syne', sans-serif;
+    margin-bottom: 12px;
+  }
+  .qc-step.qc-done .qc-step-num { background: #16a34a; }
+  .qc-question {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 14px;
+    color: var(--dark);
+  }
+  .qc-options { display: flex; flex-direction: column; gap: 10px; }
+  .qc-options-wrap { flex-direction: row; flex-wrap: wrap; }
+  .qc-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: var(--paper);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+  }
+  .qc-option:hover { border-color: var(--blue); transform: translateY(-1px); box-shadow: 0 2px 8px rgba(29,111,164,0.12); }
+  .qc-option.selected { border-color: var(--sg-red); background: #fef2f2; box-shadow: 0 0 0 3px rgba(230,51,41,0.15); }
+  .qc-option-compact { flex: 1; min-width: 140px; flex-direction: column; align-items: center; text-align: center; gap: 6px; padding: 14px 12px; }
+  .qc-opt-icon { font-size: 24px; flex-shrink: 0; }
+  .qc-opt-label { font-weight: 700; font-size: 13px; color: var(--dark); }
+  .qc-opt-detail { font-size: 11px; color: var(--muted); line-height: 1.3; }
+
+  /* Quick Check results */
+  .qc-result-card {
+    max-width: 700px;
+    margin: 24px auto 0;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+  }
+  .qc-result-header {
+    background: linear-gradient(135deg, #1e3a5f 0%, #1a2744 100%);
+    color: white;
+    padding: 24px 28px;
+  }
+  .qc-result-header h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    margin: 0 0 6px;
+  }
+  .qc-result-header p { margin: 0; font-size: 13px; opacity: 0.7; }
+  .qc-result-body { background: white; padding: 24px 28px; }
+  .qc-stat-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .qc-stat {
+    flex: 1;
+    text-align: center;
+    padding: 14px 10px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+  .qc-stat-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .qc-stat-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .qc-action-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--cream);
+  }
+  .qc-action-item:last-child { border-bottom: none; }
+  .qc-action-num {
+    flex-shrink: 0;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 14px;
+    font-family: 'Syne', sans-serif;
+  }
+  .qc-action-body { flex: 1; }
+  .qc-action-title { font-weight: 700; font-size: 14px; margin-bottom: 3px; }
+  .qc-action-when { font-size: 12px; font-weight: 600; }
+  .qc-action-detail { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+
   /* Recycled content meter */
   .meter-row { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
   .meter-label { min-width: 160px; font-size: 13px; }
@@ -921,7 +1051,8 @@
   <button class="nav-btn" onclick="showSection('packaging',this)"><span>📦</span> Packaging Types</button>
   <button class="nav-btn" onclick="showSection('targets',this)"><span>🎯</span> Targets &amp; Content</button>
   <div class="nav-label">Simulate</div>
-  <button class="nav-btn" onclick="showSection('flows',this)"><span>🔄</span> Flow Simulator</button>
+  <button class="nav-btn" onclick="showSection('quickcheck',this)"><span>⚡</span> Quick Check</button>
+  <button class="nav-btn" onclick="showSection('flows',this)"><span>🔄</span> Detailed Simulator</button>
   <button class="nav-btn" onclick="showSection('penalties',this)"><span>⚠️</span> Penalties</button>
   <div class="nav-label">Reference</div>
   <button class="nav-btn" onclick="showSection('scope',this)"><span>🔍</span> Scope &amp; Exemptions</button>
@@ -1207,6 +1338,102 @@
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════ QUICK CHECK ════════════════════════════════════════ -->
+
+<div id="quickcheck" class="section">
+
+  <h2 class="section-heading">Quick Check</h2>
+  <p class="section-sub">Answer 3 questions to see your key PPWR obligations in seconds.</p>
+
+  <div class="qc-container">
+
+    <!-- Question 1: What's your role? -->
+    <div class="qc-step">
+      <div class="qc-step-num">1</div>
+      <div class="qc-step-content">
+        <div class="qc-question">What do you do with packaging?</div>
+        <div class="qc-options" id="qc-role-options">
+          <button class="qc-option" data-value="maker" onclick="qcSelect('role',this)">
+            <span class="qc-opt-icon">🏗️</span>
+            <span class="qc-opt-label">I make or pack products</span>
+            <span class="qc-opt-detail">You manufacture goods and put them in packaging</span>
+          </button>
+          <button class="qc-option" data-value="importer" onclick="qcSelect('role',this)">
+            <span class="qc-opt-icon">📦</span>
+            <span class="qc-opt-label">I import products into the EU</span>
+            <span class="qc-opt-detail">You bring packaged goods from outside the EU/EEA</span>
+          </button>
+          <button class="qc-option" data-value="distributor" onclick="qcSelect('role',this)">
+            <span class="qc-opt-icon">🚚</span>
+            <span class="qc-opt-label">I distribute or resell products</span>
+            <span class="qc-opt-detail">You sell or distribute goods packaged by someone else</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question 2: Which country? -->
+    <div class="qc-step qc-locked" id="qc-step-country">
+      <div class="qc-step-num">2</div>
+      <div class="qc-step-content">
+        <div class="qc-question">Where do you place packaging on the market?</div>
+        <div class="qc-options qc-options-wrap" id="qc-country-options">
+          <button class="qc-option qc-option-compact" data-value="SE" onclick="qcSelect('country',this)"><span class="qc-opt-icon">🇸🇪</span><span class="qc-opt-label">Sweden</span></button>
+          <button class="qc-option qc-option-compact" data-value="NO" onclick="qcSelect('country',this)"><span class="qc-opt-icon">🇳🇴</span><span class="qc-opt-label">Norway</span></button>
+          <button class="qc-option qc-option-compact" data-value="DK" onclick="qcSelect('country',this)"><span class="qc-opt-icon">🇩🇰</span><span class="qc-opt-label">Denmark</span></button>
+          <button class="qc-option qc-option-compact" data-value="FI" onclick="qcSelect('country',this)"><span class="qc-opt-icon">🇫🇮</span><span class="qc-opt-label">Finland</span></button>
+          <button class="qc-option qc-option-compact" data-value="EE" onclick="qcSelect('country',this)"><span class="qc-opt-icon">🇪🇪</span><span class="qc-opt-label">Estonia</span></button>
+          <button class="qc-option qc-option-compact" data-value="LV" onclick="qcSelect('country',this)"><span class="qc-opt-icon">🇱🇻</span><span class="qc-opt-label">Latvia</span></button>
+          <button class="qc-option qc-option-compact" data-value="LT" onclick="qcSelect('country',this)"><span class="qc-opt-icon">🇱🇹</span><span class="qc-opt-label">Lithuania</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question 3: Packaging type -->
+    <div class="qc-step qc-locked" id="qc-step-pkg">
+      <div class="qc-step-num">3</div>
+      <div class="qc-step-content">
+        <div class="qc-question">What kind of packaging?</div>
+        <div class="qc-options qc-options-wrap" id="qc-pkg-options">
+          <button class="qc-option qc-option-compact" data-value="sales" onclick="qcSelect('pkg',this)">
+            <span class="qc-opt-icon">🛒</span>
+            <span class="qc-opt-label">Sales packaging</span>
+            <span class="qc-opt-detail">Consumer-facing: bottles, boxes, pouches</span>
+          </button>
+          <button class="qc-option qc-option-compact" data-value="grouped" onclick="qcSelect('pkg',this)">
+            <span class="qc-opt-icon">📤</span>
+            <span class="qc-opt-label">Grouped packaging</span>
+            <span class="qc-opt-detail">Multi-packs, shrink wrap over units</span>
+          </button>
+          <button class="qc-option qc-option-compact" data-value="transport" onclick="qcSelect('pkg',this)">
+            <span class="qc-opt-icon">🏗️</span>
+            <span class="qc-opt-label">Transport packaging</span>
+            <span class="qc-opt-detail">Pallets, crates, stretch film</span>
+          </button>
+          <button class="qc-option qc-option-compact" data-value="all" onclick="qcSelect('pkg',this)">
+            <span class="qc-opt-icon">📦</span>
+            <span class="qc-opt-label">All types</span>
+            <span class="qc-opt-detail">I use multiple packaging types</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Quick Check Results -->
+  <div id="qc-results" style="display:none"></div>
+
+  <!-- Link to detailed simulator -->
+  <div id="qc-detailed-link" style="display:none;text-align:center;margin-top:24px">
+    <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow);display:inline-block;max-width:500px">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:10px">Need more detail? Configure specific supply chain flows, compare scenarios, and see the full obligation audit trail.</div>
+      <button onclick="showSection('flows')" style="background:var(--blue);color:white;border:none;padding:10px 24px;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s">Open Detailed Simulator →</button>
     </div>
   </div>
 
@@ -3387,6 +3614,108 @@ function applyObligationFilter() {
   } else if (emptyMsg) {
     emptyMsg.style.display = 'none';
   }
+}
+
+// ── QUICK CHECK SIMULATOR ─────────────────────────────────────────────────
+const qcState = { role: null, country: null, pkg: null };
+
+function qcSelect(field, btn) {
+  const value = btn.getAttribute('data-value');
+  qcState[field] = value;
+
+  // Highlight selected button
+  btn.closest('.qc-options').querySelectorAll('.qc-option').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+
+  // Mark step as done
+  btn.closest('.qc-step').classList.add('qc-done');
+
+  // Unlock next step
+  if (field === 'role') {
+    const step = document.getElementById('qc-step-country');
+    step.classList.remove('qc-locked');
+    if (!qcState.country) step.scrollIntoView({ behavior:'smooth', block:'center' });
+  }
+  if (field === 'country') {
+    const step = document.getElementById('qc-step-pkg');
+    step.classList.remove('qc-locked');
+    if (!qcState.pkg) step.scrollIntoView({ behavior:'smooth', block:'center' });
+  }
+
+  // Run if all 3 selected
+  if (qcState.role && qcState.country && qcState.pkg) {
+    runQuickCheck();
+  }
+}
+
+function runQuickCheck() {
+  // Map simple role to PPWR roles
+  const roleMap = {
+    maker:       ['PACKER','MANUFACTURER','PRODUCER_EPR'],
+    importer:    ['IMPORTER','PRODUCER_EPR'],
+    distributor: ['DISTRIBUTOR'],
+  };
+  const roles = roleMap[qcState.role] || [];
+  const obligations = resolveObligations(roles, qcState.pkg, qcState.country, 2040);
+  const cd = COUNTRY_DATA[qcState.country] || { name: qcState.country, flag:'🌍' };
+
+  // Count by severity
+  const counts = { critical:0, high:0, medium:0, low:0 };
+  obligations.forEach(ob => { counts[ob.severity] = (counts[ob.severity]||0) + 1; });
+  const total = obligations.length;
+
+  // Top 5 actions
+  const topN = obligations.slice(0, 5);
+  const sevColors = {
+    critical: { border:'#ef4444', bg:'#fee2e2', color:'#dc2626', label:'Now' },
+    high:     { border:'#f59e0b', bg:'#fef3c7', color:'#d97706', label:'Soon' },
+    medium:   { border:'#3b82f6', bg:'#dbeafe', color:'#1e40af', label:'Plan' },
+    low:      { border:'#22c55e', bg:'#dcfce7', color:'#16a34a', label:'Info' },
+  };
+
+  const actionItems = topN.map((ob, i) => {
+    const c = sevColors[ob.severity] || sevColors.medium;
+    const when = ob.deadline <= 2025 ? 'Action required now' : `By ${ob.deadline}`;
+    const shortDetail = (ob.detail || '').split(/\.\s/)[0].replace(/<[^>]+>/g, '');
+    return `<div class="qc-action-item">
+      <div class="qc-action-num" style="background:${c.bg};color:${c.color}">${i+1}</div>
+      <div class="qc-action-body">
+        <div class="qc-action-title">${ob.title.replace(/<[^>]+>/g, '')}</div>
+        <div class="qc-action-when" style="color:${c.color}">${(SEV_META[ob.severity]||{}).icon||''} ${when}</div>
+        ${shortDetail ? `<div class="qc-action-detail">${shortDetail}.</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  const roleLabels = roles.map(r => {
+    const m = ROLE_META[r];
+    return m ? `<span style="display:inline-block;padding:3px 10px;border-radius:6px;background:${m.bg};color:${m.color};font-size:11px;font-weight:700;margin:2px">${m.label}</span>` : '';
+  }).join(' ');
+
+  const resultsEl = document.getElementById('qc-results');
+  resultsEl.innerHTML = `
+    <div class="qc-result-card">
+      <div class="qc-result-header">
+        <h3>${cd.flag} Your PPWR Obligations in ${cd.name}</h3>
+        <p>Based on your role as <strong>${qcState.role === 'maker' ? 'a manufacturer/packer' : qcState.role === 'importer' ? 'an importer' : 'a distributor'}</strong></p>
+      </div>
+      <div class="qc-result-body">
+        <div style="margin-bottom:16px">${roleLabels}</div>
+        <div class="qc-stat-row">
+          <div class="qc-stat" style="background:#fee2e2"><div class="qc-stat-num" style="color:#dc2626">${counts.critical}</div><div class="qc-stat-label">Critical</div></div>
+          <div class="qc-stat" style="background:#fef3c7"><div class="qc-stat-num" style="color:#d97706">${counts.high}</div><div class="qc-stat-label">Act Now</div></div>
+          <div class="qc-stat" style="background:#e0f2fe"><div class="qc-stat-num" style="color:#0369a1">${counts.medium}</div><div class="qc-stat-label">Plan For It</div></div>
+          <div class="qc-stat" style="background:#f0fdf4"><div class="qc-stat-num" style="color:#16a34a">${counts.low}</div><div class="qc-stat-label">Awareness</div></div>
+          <div class="qc-stat" style="background:var(--cream)"><div class="qc-stat-num" style="color:var(--dark)">${total}</div><div class="qc-stat-label">Total</div></div>
+        </div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;margin-bottom:12px">Your Top Actions</div>
+        ${actionItems}
+        ${total > 5 ? `<div style="text-align:center;padding:14px 0;font-size:12px;color:var(--muted)">+ ${total - 5} more obligations — open the <strong>Detailed Simulator</strong> for the full list</div>` : ''}
+      </div>
+    </div>`;
+  resultsEl.style.display = '';
+  document.getElementById('qc-detailed-link').style.display = '';
+  resultsEl.scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
 // ── TOP 3 URGENT ACTIONS ─────────────────────────────────────────────────

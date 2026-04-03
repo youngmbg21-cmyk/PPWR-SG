@@ -3621,6 +3621,29 @@ const qcState = { role: null, country: null, pkg: null };
 
 function qcSelect(field, btn) {
   const value = btn.getAttribute('data-value');
+  const step = btn.closest('.qc-step');
+
+  // Toggle: if already selected, deselect it
+  if (qcState[field] === value) {
+    qcState[field] = null;
+    btn.classList.remove('selected');
+    step.classList.remove('qc-done');
+
+    // Re-lock downstream steps and clear their selections
+    if (field === 'country') {
+      qcLockStep('qc-step-role', 'role');
+      qcLockStep('qc-step-pkg', 'pkg');
+    }
+    if (field === 'role') {
+      qcLockStep('qc-step-pkg', 'pkg');
+    }
+
+    // Hide results
+    document.getElementById('qc-results').style.display = 'none';
+    document.getElementById('qc-detailed-link').style.display = 'none';
+    return;
+  }
+
   qcState[field] = value;
 
   // Highlight selected button
@@ -3628,24 +3651,33 @@ function qcSelect(field, btn) {
   btn.classList.add('selected');
 
   // Mark step as done
-  btn.closest('.qc-step').classList.add('qc-done');
+  step.classList.add('qc-done');
 
   // Unlock next step
   if (field === 'country') {
-    const step = document.getElementById('qc-step-role');
-    step.classList.remove('qc-locked');
-    if (!qcState.role) step.scrollIntoView({ behavior:'smooth', block:'center' });
+    const next = document.getElementById('qc-step-role');
+    next.classList.remove('qc-locked');
+    if (!qcState.role) next.scrollIntoView({ behavior:'smooth', block:'center' });
   }
   if (field === 'role') {
-    const step = document.getElementById('qc-step-pkg');
-    step.classList.remove('qc-locked');
-    if (!qcState.pkg) step.scrollIntoView({ behavior:'smooth', block:'center' });
+    const next = document.getElementById('qc-step-pkg');
+    next.classList.remove('qc-locked');
+    if (!qcState.pkg) next.scrollIntoView({ behavior:'smooth', block:'center' });
   }
 
   // Run if all 3 selected
   if (qcState.role && qcState.country && qcState.pkg) {
     runQuickCheck();
   }
+}
+
+function qcLockStep(stepId, field) {
+  const step = document.getElementById(stepId);
+  if (!step) return;
+  step.classList.add('qc-locked');
+  step.classList.remove('qc-done');
+  step.querySelectorAll('.qc-option').forEach(b => b.classList.remove('selected'));
+  qcState[field] = null;
 }
 
 function runQuickCheck() {

@@ -836,6 +836,57 @@
   .sc-med { background: #fef3c7; color: #d97706; }
   .sc-low { background: #dcfce7; color: #16a34a; }
 
+  /* Guided wizard personas */
+  .wizard-personas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+  @media(max-width: 700px) { .wizard-personas { grid-template-columns: 1fr; } }
+  .wizard-persona {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    padding: 24px 18px;
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: var(--shadow);
+    font-family: 'DM Sans', sans-serif;
+  }
+  .wizard-persona:hover {
+    border-color: var(--blue);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(29,111,164,0.15);
+  }
+  .wizard-persona.active {
+    border-color: var(--sg-red);
+    border-width: 3px;
+    background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+    box-shadow: 0 0 0 4px rgba(230,51,41,0.15);
+  }
+  .wp-icon { font-size: 36px; }
+  .wp-label { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; color: var(--dark); }
+  .wp-hint { font-size: 12px; color: var(--muted); line-height: 1.4; }
+
+  /* Wizard scenario sub-cards */
+  .wiz-scenario {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: var(--shadow);
+  }
+  .wiz-scenario:hover { border-color: var(--sg-red); transform: translateY(-1px); }
+  .wiz-scenario.selected { border-color: var(--sg-red); border-width: 2.5px; background: #fef2f2; }
+
   /* Recycled content meter */
   .meter-row { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
   .meter-label { min-width: 160px; font-size: 13px; }
@@ -1174,7 +1225,7 @@
   <div class="alert alert-info" style="margin-bottom:20px">
     <div class="alert-icon">💡</div>
     <div>
-      <strong>How to use this simulator:</strong> Choose the scenario that matches your supply chain flow, configure the details, then click <em>Run Simulation</em>. The results show every PPWR obligation triggered for that flow, ranked by urgency.
+      <strong>How to use this simulator:</strong> Start by choosing what you do — make, import, or move goods. Then pick your specific scenario and adjust the options. Results update <em>instantly</em> as you change any setting.
       <div style="margin-top:10px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;font-size:13px">
         <span style="display:flex;align-items:center;gap:7px"><span style="background:#fee2e2;color:#dc2626;padding:3px 10px;border-radius:4px;font-weight:700;font-size:11px">!</span> <strong>Act now</strong> — legal obligation, non-compliance risk is immediate or near-term</span>
         <span style="display:flex;align-items:center;gap:7px"><span style="background:#fef3c7;color:#d97706;padding:3px 10px;border-radius:4px;font-weight:700;font-size:11px">~</span> <strong>Plan for it</strong> — obligation applies but deadline allows preparation time</span>
@@ -1183,51 +1234,42 @@
     </div>
   </div>
 
+  <!-- Guided Wizard: Step 1 — Persona selection -->
   <div style="margin-bottom:24px">
-    <p style="font-size:14px;font-weight:600;margin-bottom:12px">Step 1 — Choose a scenario that matches your flow:</p>
-    <div class="scenario-grid">
-      <div class="scenario-card" id="sc-own" onclick="selectScenario('own')" style="border-color:var(--sg-red);border-width:2px">
-        <div class="sc-icon">🏗️</div>
-        <div class="sc-title" style="color:var(--sg-red)">Own Manufactured Products ★</div>
-        <div class="sc-desc">Company A manufactures and packs products within the cluster, then sells domestically or cross-border. You are the primary producer — the highest PPWR obligation tier.</div>
-        <span class="sc-badge sc-high">Primary Producer — Maximum Obligations</span>
-      </div>
-      <div class="scenario-card selected" id="sc-0" onclick="selectScenario(0)">
-        <div class="sc-icon">🏭→🇸🇪</div>
-        <div class="sc-title">Import from Sister Company</div>
-        <div class="sc-desc">CA affiliate outside cluster (e.g. France, Germany) ships packaged goods to CA Nordic country for warehousing and resale.</div>
-        <span class="sc-badge sc-high">High EPR Exposure</span>
-      </div>
-      <div class="scenario-card" id="sc-1" onclick="selectScenario(1)">
-        <div class="sc-icon">🇸🇪→🇱🇹</div>
-        <div class="sc-title">Intra-Cluster Transfer</div>
-        <div class="sc-desc">CA entity in one Nordic/Baltic country sells and ships packaged goods to CA entity or customer in another cluster country.</div>
-        <span class="sc-badge sc-med">Medium EPR Exposure</span>
-      </div>
-      <div class="scenario-card" id="sc-2" onclick="selectScenario(2)">
-        <div class="sc-icon">🌏→📦→🏠</div>
-        <div class="sc-title">3rd Party Direct Ship</div>
-        <div class="sc-desc">CA orders from 3rd party supplier (e.g. Asia). Supplier ships directly to end customer in Nordic/Baltic country. No CA warehouse.</div>
-        <span class="sc-badge sc-high">High EPR Exposure</span>
-      </div>
-      <div class="scenario-card" id="sc-3" onclick="selectScenario(3)">
-        <div class="sc-icon">🌏→🏭→🏠</div>
-        <div class="sc-title">3rd Party via CA Warehouse</div>
-        <div class="sc-desc">CA orders 3rd party goods, warehouses in Nordic/Baltic country, then sells to local customers. Multiple obligation touch points.</div>
-        <span class="sc-badge sc-high">Highest Complexity</span>
-      </div>
-      <div class="scenario-card" id="sc-4" onclick="selectScenario(4)">
-        <div class="sc-icon">🇸🇪→🌍</div>
-        <div class="sc-title">Export Outside Cluster</div>
-        <div class="sc-desc">CA Nordic/Baltic sells and ships packaged goods to a customer in a non-cluster EU or non-EU country.</div>
-        <span class="sc-badge sc-low">Lower EPR Exposure</span>
-      </div>
-      <div class="scenario-card" id="sc-5" onclick="selectScenario(5)">
-        <div class="sc-icon">🏭⇄🏭</div>
-        <div class="sc-title">B2B — Transport Packaging Return</div>
-        <div class="sc-desc">Reusable transport packaging (pallets, crates, corner boards) flows between CA entities or between CA and customers.</div>
-        <span class="sc-badge sc-med">Reuse Target Focus</span>
-      </div>
+    <p style="font-size:14px;font-weight:600;margin-bottom:12px">Step 1 — What best describes your situation?</p>
+    <div class="wizard-personas">
+      <button class="wizard-persona" onclick="expandPersona('make')" id="wp-make">
+        <span class="wp-icon">🏗️</span>
+        <span class="wp-label">I make or pack products</span>
+        <span class="wp-hint">You manufacture, fill, or pack goods in the Nordics/Baltics</span>
+      </button>
+      <button class="wizard-persona" onclick="expandPersona('import')" id="wp-import">
+        <span class="wp-icon">📦</span>
+        <span class="wp-label">I import or source products</span>
+        <span class="wp-hint">You bring goods into the cluster from a sister company, supplier, or 3rd party</span>
+      </button>
+      <button class="wizard-persona" onclick="expandPersona('move')" id="wp-move">
+        <span class="wp-icon">🚚</span>
+        <span class="wp-label">I move goods across borders</span>
+        <span class="wp-hint">You transfer, export, or manage reusable transport packaging between countries</span>
+      </button>
+    </div>
+
+    <!-- Scenario sub-options (shown after persona click) -->
+    <div id="wizard-scenarios" style="display:none;margin-top:16px">
+      <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px" id="wizard-scenarios-label"></div>
+      <div class="scenario-grid" id="wizard-scenario-grid"></div>
+    </div>
+
+    <!-- Hidden original cards for selectScenario compatibility -->
+    <div style="display:none">
+      <div class="scenario-card" id="sc-own"></div>
+      <div class="scenario-card" id="sc-0"></div>
+      <div class="scenario-card" id="sc-1"></div>
+      <div class="scenario-card" id="sc-2"></div>
+      <div class="scenario-card" id="sc-3"></div>
+      <div class="scenario-card" id="sc-4"></div>
+      <div class="scenario-card" id="sc-5"></div>
     </div>
   </div>
 
@@ -3174,7 +3216,83 @@ function buildStep2(scenario) {
   container.innerHTML = `
     <p style="font-size:14px;font-weight:600;margin-bottom:16px">${config.heading}</p>
     <div class="step-row" style="grid-template-columns:repeat(${cols},1fr)">${fieldsHTML}</div>
-    <button class="simulate-btn" onclick="runSimulation()">▶ Run Simulation</button>`;
+    <div id="live-preview-hint" style="margin-top:12px;padding:10px 14px;background:#f0fdf4;border-radius:8px;font-size:12px;color:#16a34a;font-weight:600;text-align:center;border:1px solid #bbf7d0;transition:opacity 0.3s">⚡ Results update live as you change options above</div>`;
+  // Attach live-preview listeners to all selects
+  container.querySelectorAll('select').forEach(sel => {
+    sel.addEventListener('change', () => {
+      runSimulation();
+      // Fade out the hint after first interaction
+      const hint = document.getElementById('live-preview-hint');
+      if (hint) hint.style.opacity = '0';
+      setTimeout(() => { if (hint) hint.style.display = 'none'; }, 300);
+    });
+  });
+  // Auto-run with defaults
+  runSimulation();
+}
+
+// ── GUIDED WIZARD: PERSONA → SCENARIO MAPPING ───────────────────────────
+const PERSONA_SCENARIOS = {
+  make: [
+    { id:'own', icon:'🏗️', title:'Own Manufactured Products', desc:'You manufacture and pack goods in the cluster, then sell domestically or cross-border.', badge:'Primary Producer', badgeClass:'sc-high' },
+    { id:5,     icon:'🏭⇄🏭', title:'Transport Packaging Return', desc:'Reusable transport packaging (pallets, crates) flows between your entities or customers.', badge:'Reuse Targets', badgeClass:'sc-med' },
+  ],
+  import: [
+    { id:0, icon:'🏭→🇸🇪', title:'From a Sister Company', desc:'A group affiliate outside the cluster ships packaged goods to your Nordic/Baltic entity.', badge:'High EPR Exposure', badgeClass:'sc-high' },
+    { id:2, icon:'🌏→📦→🏠', title:'3rd Party — Direct to Customer', desc:'Your supplier ships directly to the end customer. No warehouse in between.', badge:'High EPR Exposure', badgeClass:'sc-high' },
+    { id:3, icon:'🌏→🏭→🏠', title:'3rd Party — Via Your Warehouse', desc:'You warehouse 3rd-party goods locally, then sell to customers.', badge:'Highest Complexity', badgeClass:'sc-high' },
+  ],
+  move: [
+    { id:1, icon:'🇸🇪→🇱🇹', title:'Transfer Within the Cluster', desc:'Move goods from one Nordic/Baltic country to another within your group.', badge:'Medium Exposure', badgeClass:'sc-med' },
+    { id:4, icon:'🇸🇪→🌍', title:'Export Outside the Cluster', desc:'Ship to a customer in a non-cluster EU or non-EU country.', badge:'Lower Exposure', badgeClass:'sc-low' },
+  ],
+};
+
+let activePersona = null;
+
+function expandPersona(persona) {
+  // Toggle persona buttons
+  document.querySelectorAll('.wizard-persona').forEach(b => b.classList.remove('active'));
+  document.getElementById('wp-' + persona).classList.add('active');
+  activePersona = persona;
+
+  // Build scenario sub-cards
+  const scenarios = PERSONA_SCENARIOS[persona];
+  const grid = document.getElementById('wizard-scenario-grid');
+  const labels = { make:'Choose your manufacturing scenario:', import:'How do you source these goods?', move:'What kind of cross-border flow?' };
+  document.getElementById('wizard-scenarios-label').textContent = labels[persona] || '';
+
+  grid.innerHTML = scenarios.map(s => `
+    <div class="wiz-scenario" onclick="wizardSelectScenario('${s.id === 'own' ? 'own' : s.id}')" id="wsc-${s.id}">
+      <div style="font-size:24px;margin-bottom:6px">${s.icon}</div>
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:4px">${s.title}</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.4;margin-bottom:8px">${s.desc}</div>
+      <span class="sc-badge ${s.badgeClass}">${s.badge}</span>
+    </div>
+  `).join('');
+
+  // Adjust grid columns based on count
+  grid.style.gridTemplateColumns = `repeat(${Math.min(scenarios.length, 3)}, 1fr)`;
+
+  document.getElementById('wizard-scenarios').style.display = '';
+
+  // If only one scenario for this persona, auto-select it
+  if (scenarios.length === 1) {
+    wizardSelectScenario(scenarios[0].id === 'own' ? 'own' : scenarios[0].id);
+  }
+}
+
+function wizardSelectScenario(id) {
+  // Parse back to number if needed
+  const scenarioId = (id === 'own') ? 'own' : parseInt(id);
+
+  // Highlight selected sub-card
+  document.querySelectorAll('.wiz-scenario').forEach(c => c.classList.remove('selected'));
+  const el = document.getElementById('wsc-' + id);
+  if (el) el.classList.add('selected');
+
+  // Delegate to original selectScenario
+  selectScenario(scenarioId);
 }
 
 // ── SCENARIO SELECTOR ────────────────────────────────────────────────────
@@ -3185,6 +3303,8 @@ function selectScenario(id) {
   if (el) el.classList.add('selected');
   currentScenario = id;
   document.getElementById('sim-results').classList.remove('visible');
+  const top3 = document.getElementById('top3-actions');
+  if (top3) top3.style.display = 'none';
   const simImpact = document.getElementById('sim-country-impact');
   if (simImpact) simImpact.style.display = 'none';
   buildStep2(id);
